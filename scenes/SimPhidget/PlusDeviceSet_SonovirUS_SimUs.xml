@@ -15,6 +15,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
     <!--
       For getting transforms from 3D Slicer through OpenIGTLink
       (Slicer requires UseReceivedTimestamps="false", UseLastTransformsOnReceiveTimeout="true")
+      ReceiveTimeoutSec="0.150" - Reduce timeout from the default 500ms to make sure transforms are provided frequently enough.
     -->
 
     <Device
@@ -22,12 +23,12 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
       Type="OpenIGTLinkTracker"
       MessageType="TRANSFORM"
       ServerAddress="127.0.0.1"
-      ClientSocketTimeout="500"
       ServerPort="18946"
       IgtlMessageCrcCheckEnabled="true"
       UseReceivedTimestamps="false"
+      ReceiveTimeoutSec="0.150"
       UseLastTransformsOnReceiveTimeout="true"
-      LocalTimeOffset="0.0"
+      LocalTimeOffsetSec="0.0"
       ToolReferenceFrame="Ref"
       AcquisitionRate="60" >
       <DataSources>
@@ -90,7 +91,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
       <vtkPlusUsSimulatorAlgo
         ImageCoordinateFrame="Image"
         ReferenceCoordinateFrame="Ref"
-        IncomingIntensityMwPerCm2="300"
+        IncomingIntensityMwPerCm2="1000"
         BrightnessConversionGamma="0.2"
         BrighntessConversionOffset="30"
         NumberOfScanlines="128"
@@ -125,14 +126,14 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
           ModelFile="Model_3_liver.stl"
           DensityKgPerM3="1060"
           SoundVelocityMPerSec="1590"
-          AttenuationCoefficientDbPerCmMhz="3.0"
+          AttenuationCoefficientDbPerCmMhz="1.0"
           BackscatterDiffuseReflectionCoefficient="0.2"
           SurfaceSpecularReflectionCoefficient="0.1"
           SurfaceDiffuseReflectionCoefficient="10.0"
         />
         <SpatialModel
           Name="Model_153_left_hepatic_vein"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_153_left_hepatic_vein.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -143,7 +144,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
         />
         <SpatialModel
           Name="Model_151_right_hepatic_vein"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_151_right_hepatic_vein.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -154,7 +155,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
         />
         <SpatialModel
           Name="Model_25_right_hepatic_artery"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_25_right_hepatic_artery.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -165,7 +166,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
         />
         <SpatialModel
           Name="Model_24_left_hepatic_artery"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_24_left_hepatic_artery.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -176,7 +177,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
         />
         <SpatialModel
           Name="Model_20_hepatic_artery_proper"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_20_hepatic_artery_proper.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -187,7 +188,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
         />
         <SpatialModel
           Name="Model_19_common_hepatic_artery"
-          ObjectCoordinateFrame="Reference"
+          ObjectCoordinateFrame="Ref"
           ModelFile="Model_19_common_hepatic_artery.stl"
           DensityKgPerM3="1800"
           SoundVelocityMPerSec="2000"
@@ -208,15 +209,15 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
             OutputImageSpacingMmPerPixel="0.1 0.1"/>
           <!-- Example for a curvilinear transducer: -->
           <ScanConversion
-            TransducerName="Ultrasonix_C5-2/60"
+            TransducerName="Convex abdominal"
             TransducerGeometry="CURVILINEAR"
-            RadiusStartMm="60.0"
-            RadiusStopMm="120.0"
-            ThetaStartDeg="-28.0"
-            ThetaStopDeg="28.0"
-            TransducerCenterPixel="400 100"
-            OutputImageSizePixel="800 1200"
-            OutputImageSpacingMmPerPixel="0.1 0.1" />
+            RadiusStartMm="30.0"
+            RadiusStopMm="150.0"
+            ThetaStartDeg="-45.0"
+            ThetaStopDeg="45.0"
+            TransducerCenterPixel="500 100"
+            OutputImageSizePixel="1000 750"
+            OutputImageSpacingMmPerPixel="0.25 0.25" />
         </RfProcessing>
       </vtkPlusUsSimulatorAlgo>
 
@@ -254,7 +255,7 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
       <VolumeReconstruction
         ImageCoordinateFrame="Image" ReferenceCoordinateFrame="Ref"
         Interpolation="LINEAR" Optimization="NONE" CompoundingMode="MEAN" FillHoles="ON" NumberOfThreads="2"
-        ClipRectangleOrigin="0 0" ClipRectangleSize="800 600"
+        ClipRectangleOrigin="0 0" ClipRectangleSize="1000 750"
         OutputOrigin="60 -10 -15" OutputExtent="0 334 0 396 0 542" OutputSpacing="0.15 0.15 0.15" >
         <HoleFilling>
           <HoleFillingElement
@@ -296,9 +297,9 @@ To use with Ascension tracker instead of a simulated tracker: enable the Ascensi
          0 0 0 1" />	
     <Transform From="Image" To="Transd"
       Matrix="
-        0.1 0 0 -40 
-        0 0.1 0 0 
-        0 0 0.1 0 
+        0.25 0 0 -125 
+        0 0.25 0 -15 
+        0 0 0.25 0 
         0 0 0 1"
       Error="0.582721" Date="2012.02.06 17:57:00" />  
   </CoordinateDefinitions> 
